@@ -50,6 +50,7 @@ def over_states():
 X_MAX = 10
 X_CRITICAL = 3
 X_MIN = X_CRITICAL + 1
+CRIT_MAX_RANGE = list(range(X_CRITICAL, X_MAX))
 FORAGE_COST = 1
 N_PATCH = 3
 HORIZON = 20
@@ -59,7 +60,7 @@ benefit = [0, 3, 5]
 rhs = [0] * N_PATCH
 # Initialisation of the f_vector matrix that helps making the steps
 f_vectors = np.zeros([X_MAX, 2])
-f_vectors[list(range(X_CRITICAL, X_MAX)), 1] = 1
+f_vectors[CRIT_MAX_RANGE, 1] = 1
 
 fxtt = np.zeros([HORIZON, X_MAX])
 mat_best_patch = np.zeros([HORIZON, X_MAX])
@@ -68,10 +69,10 @@ for time in reversed(range(HORIZON)):
     over_states()
     f_vectors[:, 1] = np.matrix.copy(fxtt[time, :])
 mat_best_patch[HORIZON - 1, :] = list(range(1, X_MAX+1))
-mat_best_patch = mat_best_patch[:, list(range(X_CRITICAL, X_MAX))]
+mat_best_patch = mat_best_patch[:, CRIT_MAX_RANGE]
 
 fxtt[HORIZON - 1, : ] = list(range(1,X_MAX+1))
-fxtt = fxtt[:,list(range(X_CRITICAL,X_MAX))]
+fxtt = fxtt[:, CRIT_MAX_RANGE]
 
 print(mat_best_patch)
 with np.printoptions(precision = 3):
