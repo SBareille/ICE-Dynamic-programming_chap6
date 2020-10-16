@@ -40,7 +40,7 @@ def over_patches(x_etat):
     return [f_vectors[x_etat - 1, 0], best_patch]
 
 def over_states():
-    """ Computes the vector of fitness and best patches for a specific time
+    """ Computes the vector of fitness and best patches for a specific times
     """
     for x_etat in list(range(X_MIN, X_MAX + 1)):
         temp = over_patches(x_etat)
@@ -50,6 +50,7 @@ def over_states():
 X_MAX = 10
 X_CRITICAL = 3
 X_MIN = X_CRITICAL + 1
+X_MAX_RANGE = list(range(1, X_MAX+1))
 CRIT_MAX_RANGE = list(range(X_CRITICAL, X_MAX))
 FORAGE_COST = 1
 N_PATCH = 3
@@ -68,10 +69,10 @@ mat_best_patch = np.zeros([HORIZON, X_MAX])
 for time in reversed(range(HORIZON)):
     over_states()
     f_vectors[:, 1] = np.matrix.copy(fxtt[time, :])
-mat_best_patch[HORIZON - 1, :] = list(range(1, X_MAX+1))
+mat_best_patch[HORIZON - 1, :] = X_MAX_RANGE
 mat_best_patch = mat_best_patch[:, CRIT_MAX_RANGE]
 
-fxtt[HORIZON - 1, : ] = list(range(1,X_MAX+1))
+fxtt[HORIZON - 1, : ] = X_MAX_RANGE
 fxtt = fxtt[:, CRIT_MAX_RANGE]
 
 print(mat_best_patch)
