@@ -44,8 +44,8 @@ def over_states():
     """
     for x_etat in list(range(X_MIN, X_MAX + 1)):
         temp = over_patches(x_etat)
-        fxtt[TIME, x_etat - 1] = temp[0]
-        mat_best_patch[TIME, x_etat - 1] = temp[1]
+        fxtt[time, x_etat - 1] = temp[0]
+        mat_best_patch[time, x_etat - 1] = temp[1]
 
 X_MAX = 10
 X_CRITICAL = 3
@@ -64,12 +64,9 @@ f_vectors[list(range(X_CRITICAL, X_MAX)), 1] = 1
 fxtt = np.zeros([HORIZON, X_MAX])
 mat_best_patch = np.zeros([HORIZON, X_MAX])
 
-TIME = HORIZON - 1
-
-while TIME > 0:
-    TIME -= 1
+for time in reversed(range(HORIZON)):
     over_states()
-    f_vectors[:, 1] = np.matrix.copy(fxtt[TIME, :])
+    f_vectors[:, 1] = np.matrix.copy(fxtt[time, :])
 mat_best_patch[HORIZON - 1, :] = list(range(1, X_MAX+1))
 mat_best_patch = mat_best_patch[:, list(range(X_CRITICAL, X_MAX))]
 
