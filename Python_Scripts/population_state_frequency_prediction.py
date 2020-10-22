@@ -10,7 +10,7 @@ import numpy as np
 
 
 # Setting the working directory.
-PATH = "C:/Users/aubin/Documents/Etudes/Rennes1/S3/ICE"
+PATH = os.getcwd()
 os.chdir(PATH)
 print("Current Working Directory :", os.getcwd())
 
