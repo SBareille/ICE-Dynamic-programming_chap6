@@ -14,7 +14,7 @@ Reference :
 Roff, D. A. (2010). Modeling Evolution: an introduction to numerical methods. Oxford University Press.
 
 Contributors : 
-Aubin WOEHREL,
-Clément BOURGADE,
-Florian PECHIERAS,
-Servane BAREILLE
+BAREILLE Servane,
+BOURGADE Clément,
+PECHIERAS Florian,
+WOEHREL Aubin
