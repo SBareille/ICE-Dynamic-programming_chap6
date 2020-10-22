@@ -1,12 +1,12 @@
 #####################################################
-#### Scénario 1 : variation de la fitness finale ####
+#### ScÃ©nario 1 : variation de la fitness finale ####
 #####################################################
 
 
-# La seule différence par rapport au programme coeur est que la fitness finale correspond à l'état.
-# Exemple : pour le cas  X = 4 la fitness finale associée sera 4
+# La seule diffÃ©rence par rapport au programme coeur est que la fitness finale correspond Ã  l'Ã©tat.
+# Exemple : pour le cas  X = 4 la fitness finale associÃ©e sera 4
 
-# Portion du programme pour obtenir la matrice de décision ----
+# Portion du programme pour obtenir la matrice de dÃ©cision ----
 
 rm(list = ls()) # Remove all objects from memory
 
@@ -108,7 +108,7 @@ while (Time > 1) {
 } # End of Time loop
 
 
-# Output information. For display add states (¼wts) to last row of matrices
+# Output information. For display add states (Â¼wts) to last row of matrices
 X <- seq(from = 1, to = Xmax)
 Best.Patch[Horizon,] <- X
 FxtT[Horizon,] <- X
