@@ -1,5 +1,5 @@
 #################################################################
-#### Scénario 3 : cas de choix équivalent, exemple des lions ####
+#### ScÃ©nario 3 : cas de choix Ã©quivalent, exemple des lions ####
 #################################################################
 
 rm(list = ls()) # Remove all objects from memory
