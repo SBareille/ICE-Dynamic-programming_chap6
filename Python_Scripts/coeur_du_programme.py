@@ -4,7 +4,13 @@ Created on Wed Oct 14 10:34:34 2020
 
 """
 # Import of the module numpy for using matrices 
+import os
 import numpy as np
+
+PATH = "C:/Users/aubin/Documents/Etudes/Rennes1/S3/ICE"
+os.chdir(PATH)
+print("Current Working Directory :", os.getcwd())
+
 
 ######################################################################################
 ####### Coeur du programme, utilisé par la suite pour les 5 autres scénarios #########
