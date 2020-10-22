@@ -1,5 +1,5 @@
 ############################################################
-#### Scénario 4 : choix des hôtes chez les parasitoides ####
+#### ScÃ©nario 4 : choix des hÃ´tes chez les parasitoides ####
 ############################################################
 
 setwd("~/Etudes/Rennes1/S3/ICE/Projet/Scripts/ScriptsR")
@@ -62,12 +62,12 @@ OVER.STATES <- function(F.vectors, Xcritical, Xmax, Xinc, Npatch, Benefit, Pbene
 } # End of function
 
 # . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-# Fonction de la boucle du programme principal. A été faite sous forme de fonction dans ce cas car on fait tourner le programme pour chaque type d'hôte (i.e. 4 fois)
-# Pas présenté de cette manière dans le pdf mais le mettre sous forme de fonction permet de tout faire tourner dans un seul script pour la suite (i.e. prédictions individuelles)
+# Fonction de la boucle du programme principal. A Ã©tÃ© faite sous forme de fonction dans ce cas car on fait tourner le programme pour chaque type d'hÃ´te (i.e. 4 fois)
+# Pas prÃ©sentÃ© de cette maniÃ¨re dans le pdf mais le mettre sous forme de fonction permet de tout faire tourner dans un seul script pour la suite (i.e. prÃ©dictions individuelles)
 # Arguments de la fonction Main : 
-# HostType = type d'hôte pour lequel on veut ressortir la matrice de décision correspondante
+# HostType = type d'hÃ´te pour lequel on veut ressortir la matrice de dÃ©cision correspondante
 # Output1 = Nom du fichier pour lequel on enregistre le dernier pas de temps
-# Output2 = Nom du fichier pour lequel on enregistre la matrice de décision complète
+# Output2 = Nom du fichier pour lequel on enregistre la matrice de dÃ©cision complÃ¨te
 
 MAIN <- function(HostType, Output1, Output2) {
   # MAIN PROGRAM
@@ -145,32 +145,32 @@ MAIN <- function(HostType, Output1, Output2) {
   DATA <- t(DATA)
   write(DATA,file = Output1, nc = 2)
   
-  # Enregistrement des matrices de décision pour chaque type d'hôte
+  # Enregistrement des matrices de dÃ©cision pour chaque type d'hÃ´te
   DATA <- Best.Patch[1:Horizon - 1,2:41]
   DATA <- t(DATA)
   write(DATA, file = Output2, nc = 40)
 }
 
 
-## On fait tourner le programme pour l'hôte n°1
+## On fait tourner le programme pour l'hÃ´te nÂ°1
 HostType = 1
 Output1 = "OVOPOSITION1.txt"
 Output2 = "DM1.txt"
 MAIN(HostType, Output1, Output2)
 
-## Idem pour l'hôte n°2
+## Idem pour l'hÃ´te nÂ°2
 HostType = 2
 Output1 = "OVOPOSITION2.txt"
 Output2 = "DM2.txt"
 MAIN(HostType, Output1, Output2)
 
-## Idem pour l'hôte n°3
+## Idem pour l'hÃ´te nÂ°3
 HostType = 3
 Output1 = "OVOPOSITION3.txt"
 Output2 = "DM3.txt"
 MAIN(HostType, Output1, Output2)
 
-## Idem pour l'hôte n°4
+## Idem pour l'hÃ´te nÂ°4
 HostType = 4
 Output1 = "OVOPOSITION4.txt"
 Output2 = "DM4.txt"
@@ -184,7 +184,7 @@ MAIN(HostType, Output1, Output2)
 
 
 ########################################
-#### Partie prédiction individuelle ####
+#### Partie prÃ©diction individuelle ####
 ########################################
 
 rm(list = ls()) # Remove all objects from memory
