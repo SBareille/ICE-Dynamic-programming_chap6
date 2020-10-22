@@ -1,26 +1,26 @@
 #####################################################################
-#### Scénario 2 : Forager ou ne pas forager, un bon gros dilemme ####
+#### ScÃ©nario 2 : Forager ou ne pas forager, un bon gros dilemme ####
 #####################################################################
 
 # Application de la programmation dynamique au choix de l'oiseau d'aller chasser ou non 
-# Ici le X correspond à la condition de l'oiseau 
-# L'oiseau a une certaine probabilité de perdre sa condition à chaque pas de temps
-# Idem que dans les cas précédents, si l'oiseau va chasser, il a une certaine probabilité d'avoir un bénéfice et donc une certaine probabilité de ne pas avoir de bénéfice
-# Autre paramètre important à comprendre : la condition de l'oiseau influence sa probabilité de mourir :
-# Plus l'oiseau a une bonne condition (ie est mieux nourri donc plus gros), plus sa probabilité de mourir est importante
+# Ici le X correspond Ã  la condition de l'oiseau 
+# L'oiseau a une certaine probabilitÃ© de perdre sa condition Ã  chaque pas de temps
+# Idem que dans les cas prÃ©cÃ©dents, si l'oiseau va chasser, il a une certaine probabilitÃ© d'avoir un bÃ©nÃ©fice et donc une certaine probabilitÃ© de ne pas avoir de bÃ©nÃ©fice
+# Autre paramÃ¨tre important Ã  comprendre : la condition de l'oiseau influence sa probabilitÃ© de mourir :
+# Plus l'oiseau a une bonne condition (ie est mieux nourri donc plus gros), plus sa probabilitÃ© de mourir est importante
 
-rm(list = ls()) # Enlève toutes les variables de la mémoire
+rm(list = ls()) # EnlÃ¨ve toutes les variables de la mÃ©moire
 
-# Fonction pour calculer la fitness quand l'individu est dans l'état X
+# Fonction pour calculer la fitness quand l'individu est dans l'Ã©tat X
 FITNESS <- function(X, Xcritical, Xmax, Xmin, Cost, Benefit, Pbenefit, Pmortality, F.vectors) {
-  # Etat dans le cas ou il y a un bénéfice
-  # A noter que ici le bénéfice peut être -1 en cas de la perte de l'état de l'individu
-  X.Food <- X + Benefit # Pas de notion de coût dans ce modèle. Le potentiel coût est compris dans la variable bénéfice
-  # Si jamais X.Food est plus grand que Xmax alors X.food doit être mis à Xmax
+  # Etat dans le cas ou il y a un bÃ©nÃ©fice
+  # A noter que ici le bÃ©nÃ©fice peut Ãªtre -1 en cas de la perte de l'Ã©tat de l'individu
+  X.Food <- X + Benefit # Pas de notion de coÃ»t dans ce modÃ¨le. Le potentiel coÃ»t est compris dans la variable bÃ©nÃ©fice
+  # Si jamais X.Food est plus grand que Xmax alors X.food doit Ãªtre mis Ã  Xmax
   X.Food <- min(X.Food, Xmax)
-  # If X.Food est plus faible ou égal à Xcritique, passage au Xcritique
+  # If X.Food est plus faible ou Ã©gal Ã  Xcritique, passage au Xcritique
   X.Food <- max(X.Food, Xcritical)
-  # Etat dans le cas ou le forager ne gagne pas de bénéfice
+  # Etat dans le cas ou le forager ne gagne pas de bÃ©nÃ©fice
   X.NoFood <- X 
   # If X.NoFood is less than Xcritical set X.NoFood to Xcritical
   X.NoFood <- max(X.NoFood, Xcritical)
@@ -117,7 +117,7 @@ while (Time > 1) {
 } # End of Time loop
 
 
-# Output information. For display add states (¼wts) to last row of matrices
+# Output information. For display add states (Â¼wts) to last row of matrices
 X <- seq(from = 1, to = Xmax)
 Best.Patch[Horizon,] <- X
 FxtT[Horizon,] <- X
