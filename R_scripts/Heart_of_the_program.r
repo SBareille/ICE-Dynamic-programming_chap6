@@ -1,9 +1,9 @@
 ######################################################################################
-####### Coeur du programme, utilisé par la suite pour les 5 autres scénarios #########
+####### Coeur du programme, utilisÃ© par la suite pour les 5 autres scÃ©narios #########
 ######################################################################################
 
 
-# Portion du programme pour obtenir la matrice de décision ----
+# Portion du programme pour obtenir la matrice de dÃ©cision ----
 
 rm(list = ls()) # Remove all objects from memory
 
@@ -106,7 +106,7 @@ while (Time > 1) {
 } # End of Time loop
 
 
-# Output information. For display add states (¼wts) to last row of matrices
+# Output information. For display add states (Â¼wts) to last row of matrices
 X <- seq(from = 1, to = Xmax)
 Best.Patch[Horizon,] <- X
 FxtT[Horizon,] <- X
@@ -122,7 +122,7 @@ signif(FxtT[,Xmin:Xmax],3) # Print Fxt of Decision matrix: 3 sig places
 
 
 
-# Portion de programme pour la prédiction individuelle utilisant la matrice de décision ----
+# Portion de programme pour la prÃ©diction individuelle utilisant la matrice de dÃ©cision ----
 
 # Initialize parameters
 set.seed(10) # Set random number seed
@@ -181,8 +181,8 @@ for (Replicate in 1:10) { # Iterate over 10 replicates
 
 
 
-# Portion de programme pour obtenir l'état attendu, en utilisant la matrice de décision ----
-# Plutôt que de répéter n fois des scénarios depuis un certain état donné, le programme suivant permet d'obtenir la distribution dans un chacun des états
+# Portion de programme pour obtenir l'Ã©tat attendu, en utilisant la matrice de dÃ©cision ----
+# PlutÃ´t que de rÃ©pÃ©ter n fois des scÃ©narios depuis un certain Ã©tat donnÃ©, le programme suivant permet d'obtenir la distribution dans un chacun des Ã©tats
 
 # Set initial parameter values
 Xmax <- 10 # Maximum value of state
