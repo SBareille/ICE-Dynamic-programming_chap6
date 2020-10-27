@@ -22,9 +22,6 @@ os.chdir(PATH)
 print("Current Working Directory :", os.getcwd())
 
 
-# Save the decision matrix in txt file (to use in other scripts)
-np.savetxt("decision_matrix.txt", mat_best_patch, fmt="%.0f")
-
 # FONCTION DEFINITIONS
 def fitness(x_state, i, f_vectors):
     """ Computes the fitness (probability of surviving a time step) of a forager in one specific patch, knowing its state is x_state
@@ -53,7 +50,7 @@ def fitness(x_state, i, f_vectors):
     w_patch = (1 - p_mortality[i]) * (term1 + term2)
     return w_patch
 
-def over_patches(x_state, rhs, f_vectors):
+def over_patches(x_state, f_vectors):
     """ Computes the best fitness over the possible patches for a specific state.
     Arguments:
     x_state -- state of the animal
@@ -65,13 +62,14 @@ def over_patches(x_state, rhs, f_vectors):
     # The function loops over all 3 patches.
     # It registers the value of fitness for each patch in rhs.
     # Then it assignes the best fitness value in f_vectors fot x_state, and the best patch associated in best_patch.
+    rhs = [0] * N_PATCH  # Saves the fitnesses for the 3 patches at a specific time
     for i in range(N_PATCH):
-        rhs[i] = fitness(x_state, i)
+        rhs[i] = fitness(x_state, i, f_vectors)
     f_vectors[x_state - 1, 0] = max(rhs)
     best_patch = rhs.index(max(rhs)) + 1
     return [f_vectors[x_state - 1, 0], best_patch]
 
-def over_states(time, mat_best_patch, fxtt):
+def over_states(time, mat_best_patch, fxtt, f_vectors):
     """ Add in the best_patch and fxtt matrixes the calculated values for each State in a specific time.
     Arguments:
     time
@@ -79,7 +77,7 @@ def over_states(time, mat_best_patch, fxtt):
     fxtt -- stores the associated fitness for each state value of each time
     """
     for x_state in list(range(X_MIN, X_MAX + 1)):
-        temp = over_patches(x_state)
+        temp = over_patches(x_state, f_vectors)
         fxtt[time, x_state - 1] = temp[0]
         mat_best_patch[time, x_state - 1] = temp[1]
 
@@ -95,9 +93,8 @@ p_mortality = [0, 0.004, 0.02]  # Probability to die from a cause other than sta
 p_benefit = [1, 0.4, 0.6]  # Probability of finding food in the 3 patches
 benefit = [0, 3, 5]  # State benefit if food is discovered for the 3 patches
 
-def main():
-    rhs = [0] * N_PATCH  # Saves the fitnesses for the 3 patches at a specific time
 
+def main():
     # Initialisation of the f_vector matrix that enables the calcultation of fitnesses at time t using the ones in time t+1.
     # In the second column we have fitnesses in time t+1 (used for calculation) 
     # and in the first column the updated values of fitness in time t.
@@ -114,7 +111,7 @@ def main():
     # For each time we calculate a lign of best_patches and fxtt, 
     # and then pass the values of fitness into the second column of f_vector.
     for time in reversed(range(HORIZON)):
-        over_states()
+        over_states(time, mat_best_patch, fxtt, f_vectors)
         f_vectors[:, 1] = np.matrix.copy(fxtt[time, :])
     
     # Finally, we output the best_patch and fxtt matrixes after formating
@@ -125,5 +122,12 @@ def main():
     fxtt = fxtt[:, list(range(X_CRITICAL, X_MAX))]
     
     print(mat_best_patch)
+    
     with np.printoptions(precision = 3):
         print(fxtt)
+
+    # Save the decision matrix in txt file (to use in other scripts)
+    np.savetxt("decision_matrix.txt", mat_best_patch, fmt="%.0f")
+    
+if __name__ =="__main__":
+    main()
