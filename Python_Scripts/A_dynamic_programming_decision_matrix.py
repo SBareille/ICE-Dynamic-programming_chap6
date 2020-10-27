@@ -111,8 +111,7 @@ HORIZON = 20  # Number of time steps
 p_mortality = [0, 0.004, 0.02]  # Probability to die from a cause other than
                                 # starvation in the 3 patches
 p_benefit = [1, 0.4, 0.6]  # Probability of finding food in the 3 patches
-benefit = [0, 3, 5]  # State benefit if food is discovered for the 3 patches
-
+benefit = [0, 3, 5]  # State benefit if food is discovered for the 3 patches 
 
 def main():
     """" ATTENTIONNNNN TROUVER NOM """
