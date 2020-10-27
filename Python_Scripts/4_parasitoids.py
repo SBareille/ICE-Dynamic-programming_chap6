@@ -6,7 +6,7 @@ import random
 def over_patches():
     Best_clutch = [0] * N_PATCH
     Index = 1 + (X - X_CRITICAL)/X_INC
-    Clutch = range(1, int(Index))
+    Clutch = list(range(1, int(Index)))
     W = P_SURVIVAL * (1 - sum(p_benefit)) * F_vectors[int(Index),1]
     for i in range(N_PATCH):
         W_partial = Benefit[range(1,int(Index)), i] + P_SURVIVAL * F_vectors[Index-Clutch-1,1]
