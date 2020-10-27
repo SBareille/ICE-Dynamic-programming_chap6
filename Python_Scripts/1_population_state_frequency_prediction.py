@@ -43,7 +43,7 @@ for x_etat1 in range(X_MIN, X_MAX + 1):
     x = min(x_etat1 - FORAGE_COST + benefit[K-1], X_MAX)
     trans_density[x_etat1 - 1, x - 1] = (1 - p_mortality[K - 1]) * p_benefit[K - 1]
     x = x_etat1 - FORAGE_COST
-    if x > X_CRITICAL:
+    if x > X_CRITICAL & K != 1:
         trans_density[x_etat1 - 1, x - 1] = (1 - p_mortality[K - 1]) * (1 - p_benefit[K - 1])
         trans_density[x_etat1 - 1, X_CRITICAL - 1] = p_mortality[K - 1]
     else:
