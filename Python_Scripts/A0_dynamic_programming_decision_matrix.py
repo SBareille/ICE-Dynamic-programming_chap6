@@ -102,9 +102,9 @@ def over_states(time, mat_best_patch, fxtt, f_vectors):
 
 # MAIN PROGRAM
 # Initialize parameters
-X_MAX = 10 # Maximal state for a forager
-X_CRITICAL = 3 # Minimal state for a forager (in this case it is dead)
-X_MIN = X_CRITICAL + 1 # Minimal living state
+X_MAX = 10  # Maximal state for a forager
+X_CRITICAL = 3  # Minimal state for a forager (in this case it is dead)
+X_MIN = X_CRITICAL + 1  # Minimal living state
 FORAGE_COST = 1  # Metabolic cost to foraging per time step
 N_PATCH = 3  # Number of patches
 HORIZON = 20  # Number of time steps
