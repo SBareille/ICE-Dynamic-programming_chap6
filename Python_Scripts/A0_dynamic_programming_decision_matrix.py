@@ -4,7 +4,7 @@ in order to optimize the fitness of an individual
 
 Usage :
 ======
-python dynamic_programmming_decision_matrix.py
+python A0_dynamic_programming_decision_matrix.py
 """
 
 __authors__ = ("BAREILLE Servane", "BOURGADE Clément", "PECHIERAS Florian", \
@@ -134,19 +134,18 @@ def main():
     # as we calculate fitness in time t thanks to the fitness in time t+1
     # For each time we calculate a lign of best_patches and fxtt,
     # and then pass the values of fitness into the second column of f_vector.
-    for time in reversed(range(HORIZON)):
+    for time in reversed(range(HORIZON-1)):
         over_states(time, mat_best_patch, fxtt, f_vectors)
         f_vectors[:, 1] = np.matrix.copy(fxtt[time, :])
 
     # Finally, we output the best_patch and fxtt matrixes after formating
     mat_best_patch[HORIZON - 1, :] = list(range(1, X_MAX+1))
     mat_best_patch = mat_best_patch[:, list(range(X_CRITICAL, X_MAX))]
-    print(__name__)
     fxtt[HORIZON - 1, : ] = list(range(1, X_MAX+1))
     fxtt = fxtt[:, list(range(X_CRITICAL, X_MAX))]
     return(mat_best_patch, fxtt)
 
 if __name__ == "__main__":
     with np.printoptions(precision=3):
-        print(main())
+        print(main()[0],"\n", main()[1])
         
