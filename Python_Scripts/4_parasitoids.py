@@ -3,27 +3,30 @@ import os
 import numpy as np
 import random
 
-def over_patches():
+def over_patches(X):
     Best_clutch = [0] * N_PATCH
-    Index = 1 + (X - X_CRITICAL)/X_INC
-    Clutch = list(range(1, int(Index)))
-    W = P_SURVIVAL * (1 - sum(p_benefit)) * F_vectors[int(Index),1]
+    Index = [1 + int((X - X_CRITICAL)/X_INC)] * int(1 + (X - X_CRITICAL)/X_INC)
+    clutch = list(range(1, int(Index[0])))
+    W = P_SURVIVAL * (1 - sum(p_benefit)) * F_vectors[int(Index[0]),1]
     for i in range(N_PATCH):
-        W_partial = Benefit[range(1,int(Index)), i] + P_SURVIVAL * F_vectors[Index-Clutch-1,1]
-        Best = W_partial.sort(reverse = TRUE)
+        W_partial = list(Benefit[range(1,int(Index[0]) + 1), i] + P_SURVIVAL * F_vectors[list(np.array(Index)-np.array(clutch)),1])
+        print(W_partial)
+        W_partial.sort()
+        W_partial.reverse()
+        Best = W_partial.copy()
         Best_clutch[i] = Best[0]
-        W += p_benefit[i] * max(W.partial)
-        if((len(W_partial>1)) and (W_partial[Best[0]] == W_partial[Best[1]])):
+        W += p_benefit[i] * max(W_partial)
+        if((len(W_partial)>1) and (W_partial[Best[0]] == W_partial[Best[1]])):
             print("Several possible equal choices")
-    F_vectors[int(Index) - 1, 0] = W
-    Temp = (F_vectors[int(Index) - 1, 0], Best_Clutch[HOST_TYPE])
+    F_vectors[int(Index[0]) - 1, 0] = W
+    Temp = (F_vectors[int(Index[0]) - 1, 0], Best_Clutch[HOST_TYPE - 1])
     F_vectors.append(Temp)
     return(F_vectors)
 
 def over_states():
-    for i in range(1, int(MAX_INDEX)):
+    for i in range(2, int(MAX_INDEX) + 1):
         X = (i - 1) * X_INC + X_CRITICAL
-        Temp = over_patches()
+        Temp = over_patches(X)
         D = Temp[-1,:]
         del(Temp[-1,:])
         F_vectors = np.transpose(Temp)
@@ -40,7 +43,6 @@ P_SURVIVAL = 0.99
 MAX_INDEX = 1 + (X_MAX - X_CRITICAL)/X_INC
 ##INDEX = range(1,int(MAX_INDEX) + 1)
 F_vectors = np.zeros((int(MAX_INDEX), 2))
-Clutch = range(X_MAX + 1)
 Benefit = np.zeros((X_MAX + 1, 4))
 SHM = [9, 12, 14, 23]
 HORIZON = 21
@@ -55,7 +57,8 @@ host_coef[2,:] = [-0.1048, 2.2097, -0.0878, 0.0004222]
 host_coef[3,:] = [-0.0524, 2.0394, -0.0339, -0.0003111]
 
 def main(HostType, Output1, Output2):
-    for i in range(41):
+    Clutch = list(range(X_MAX + 1))
+    for i in range(X_MAX + 1):
         for j in range(4):
             Benefit[i, j] = host_coef[j, 0] + host_coef[j, 1] * Clutch[i] + host_coef[j, 2] * Clutch[i]**2 + host_coef[j, 3] * Clutch[i]**3
     Benefit[0,:] = 0
