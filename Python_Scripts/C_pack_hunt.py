@@ -8,21 +8,29 @@ import numpy as np
 import scipy.stats
 #from scipy.stats import binom
 
-def fitness(x_state, i):
-    """ scenario 3"""
-    w_patch = 0
-    x_store = x_state # Set X to Xstore to preserve value through loop
-    for i_kill in range(0,4):
-        x = x_store - COST + benefit[i_kill] # Calculate new state value
-        x = min(x_state, X_MAX)
-        x = max(x_state, X_CRITICAL)
-        index = 1 + int((x_state - X_CRITICAL)/X_INC) # (arrondi en dessous)
-        index = min(index, INDEX_MAX) 
+def fitness(x_state, benefit_row_i, p_benefit_row_i, f_vectors):
+    """ Computes the fitness of a hunter in specific pack size, knowing its state is x_state.
 
-        qx = x_state - int(x) # qx for linear interpolation
+    Keyword arguments:
+    x_state -- state of the hunter
+    benefit_row_i -- State benefit for one hunter if it mades 0 to 4 kills with its pack of size i.
+    p_benefit_row_i --  # Probability of killing 0 to 4 preys by a pack of size i
+    f_vectors -- enables the calcultation of fitnesses at time t
+                using the ones in time t+1
+    """
+    w_patch = 0
+    x_store = x_state # Set x_state to Xstore to preserve value through loop
+    for i_kill in range(0,4):
+        x_state = x_store - COST + benefit_row_i[i_kill] # Calculate new state value
+        x_state = min(x_state, X_MAX)
+        x_state = max(x_state, X_CRITICAL)
+        index = 1 + int((x_state - X_CRITICAL)/X_INC) # (arrondi en dessous)
+        index = min(index, INDEX_MAX)
+
+        qx = x_state - int(x_state) # qx for linear interpolation
         term1 = qx * f_vectors[index, 1]
         term2 = (1 - qx) * f_vectors[index-1, 1]
-        w_patch = w_patch + p_benefit[i_kill] * (term1 + term2)
+        w_patch = w_patch + p_benefit_row_i[i_kill] * (term1 + term2)
     return w_patch
 
 def over_patches(x_state):
