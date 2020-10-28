@@ -10,16 +10,13 @@ def over_patches(X):
     W = P_SURVIVAL * (1 - sum(p_benefit)) * F_vectors[int(Index[0]),1]
     for i in range(N_PATCH):
         W_partial = list(Benefit[range(1,int(Index[0]) + 1), i] + P_SURVIVAL * F_vectors[list(np.array(Index)-np.array(clutch)),1])
-        print(W_partial)
-        W_partial.sort()
-        W_partial.reverse()
-        Best = W_partial.copy()
+        Best = sorted(range(len(W_partial)), key=lambda i:W_partial[i]) # sorting list W_partial by indices (not the values)
         Best_clutch[i] = Best[0]
         W += p_benefit[i] * max(W_partial)
         if((len(W_partial)>1) and (W_partial[Best[0]] == W_partial[Best[1]])):
             print("Several possible equal choices")
     F_vectors[int(Index[0]) - 1, 0] = W
-    Temp = (F_vectors[int(Index[0]) - 1, 0], Best_Clutch[HOST_TYPE - 1])
+    Temp = (F_vectors[int(Index[0]) - 1, 0], Best_clutch[HOST_TYPE - 1])
     F_vectors.append(Temp)
     return(F_vectors)
 
