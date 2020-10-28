@@ -8,24 +8,24 @@ import numpy as np
 import scipy.stats
 #from scipy.stats import binom
 
-def fitness():
+def fitness(x_state, i):
     """ scenario 3"""
     w_patch = 0
-    x_store = x # Set X to Xstore to preserve value through loop
-    for i_kill in range(1,5):
-        x = x_store - COST + BENEFIT[i_kill] # Calculate new state value
-        x = min(x, X_MAX)
-        x = max(x, X_CRITICAL)
-        index = 1 + int((x - X_CRITICAL)/X_INC) # (arrondi en dessous)
+    x_store = x_state # Set X to Xstore to preserve value through loop
+    for i_kill in range(0,4):
+        x = x_store - COST + benefit[i_kill] # Calculate new state value
+        x = min(x_state, X_MAX)
+        x = max(x_state, X_CRITICAL)
+        index = 1 + int((x_state - X_CRITICAL)/X_INC) # (arrondi en dessous)
         index = min(index, INDEX_MAX) 
-        
-        qx = x - int(x) # qx for linear interpolation
+
+        qx = x_state - int(x) # qx for linear interpolation
         term1 = qx * f_vectors[index, 1]
         term2 = (1 - qx) * f_vectors[index-1, 1]
         w_patch = w_patch + p_benefit[i_kill] * (term1 + term2)
     return w_patch
 
-def over_patches():
+def over_patches(x_state):
     """ scenario 3
     """
     rhs = np.zeros([1, N_PATCH])  # Saves the fitnesses for the 3 patches
@@ -60,6 +60,20 @@ def over_states():
     
     return mat_temp
   
+
+    n <- nrow(temp)- 2
+    f_vectors = temp- Temp[1:n,]
+    Store[Index,1:2] <- Temp[n+1,] # Save F(x,t,T) and best patch
+    Store[Index,3] <- Temp[n+2,1] # 
+
+    
+    n <- nrow(Temp)-1
+    F.vectors <- Temp[1:n,]
+    Store[X,] <- Temp[n+1,] # Save F(x,t) and best patch
+    } # End of X loop
+  
+  # Add Store values to end of F.vectors for pass back to main program
+  Temp <- cbind(F.vectors, Store) # Combined by columns       
 
 
 # Initialize parameters
