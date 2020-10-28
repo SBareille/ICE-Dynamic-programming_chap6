@@ -6,26 +6,27 @@ import random
 def over_patches(X):
     Best_clutch = [0] * N_PATCH
     Index = [1 + int((X - X_CRITICAL)/X_INC)] * int(1 + (X - X_CRITICAL)/X_INC)
-    clutch = list(range(1, int(Index[0])))
-    W = P_SURVIVAL * (1 - sum(p_benefit)) * F_vectors[int(Index[0]),1]
+    clutch = list(range(1, int(Index[0]) + 1))
+    W = P_SURVIVAL * (1 - sum(p_benefit)) * F_vectors[int(Index[0]) - 1,1]
     for i in range(N_PATCH):
-        W_partial = list(Benefit[range(1,int(Index[0]) + 1), i] + P_SURVIVAL * F_vectors[list(np.array(Index)-np.array(clutch)),1])
+        W_partial = list(Benefit[range(1,int(Index[0])), i] + P_SURVIVAL * F_vectors[list(np.array(Index)-np.array(clutch)),1])
         Best = sorted(range(len(W_partial)), key=lambda i:W_partial[i]) # sorting list W_partial by indices (not the values)
         Best_clutch[i] = Best[0]
         W += p_benefit[i] * max(W_partial)
         if((len(W_partial)>1) and (W_partial[Best[0]] == W_partial[Best[1]])):
             print("Several possible equal choices")
     F_vectors[int(Index[0]) - 1, 0] = W
-    Temp = (F_vectors[int(Index[0]) - 1, 0], Best_clutch[HOST_TYPE - 1])
-    F_vectors.append(Temp)
-    return(F_vectors)
+    Temp = np.array([[F_vectors[int(Index[0]) - 1, 0], Best_clutch[HOST_TYPE - 1]]])
+    F_v=np.concatenate((F_vectors,Temp), axis=0)
+    #F_v=np.concatenate((F_vectors, Temp))
+    return(F_v)
 
 def over_states():
     for i in range(2, int(MAX_INDEX) + 1):
         X = (i - 1) * X_INC + X_CRITICAL
         Temp = over_patches(X)
         D = Temp[-1,:]
-        del(Temp[-1,:])
+        np.delete(Temp,-1,axis=0)
         F_vectors = np.transpose(Temp)
         np.c_[F_vectors, D]
     return(F_vectors)
