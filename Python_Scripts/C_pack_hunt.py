@@ -17,7 +17,7 @@ __date__ = "29/10/2020"
 
 import numpy as np
 import scipy.stats
-#from scipy.stats import binom
+import matplotlib.pyplot as plt
 
 def fitness(x_state, benefit_row_i, p_benefit_row_i, f_vectors):
     """ Computes the fitness of a hunter in specific pack size, knowing its state is x_state.
@@ -140,9 +140,10 @@ def main():
     mat_best_patch[HORIZON - 1, :] = list(range(0, INDEX_MAX + 1))
     fxtt[HORIZON - 1, : ] = list(range(0, INDEX_MAX + 1))
     choices[HORIZON - 1, : ] = list(range(0, INDEX_MAX + 1))
-    return(mat_best_patch, fxtt, choices)
+    return mat_best_patch, fxtt, choices
 
 
 if __name__ == "__main__":
     np.set_printoptions(precision=3, suppress=True)
-    print(main()[0],"\n", main()[1],"\n", main()[2])
+    results = main()
+    print('\n'.join(results))
