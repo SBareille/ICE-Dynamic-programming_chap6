@@ -23,7 +23,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Checks if the script A0 used as a module to compute the decision matrix
-# is in the working directory.
+# is in the working directory. Imports it if its the case or sends an error
+# if not.
 if os.path.isfile(os.getcwd()+"\\A0_dynamic_programming_decision_matrix.py"):
     import A0_dynamic_programming_decision_matrix as ns
 else :
