@@ -88,7 +88,7 @@ for replicate in range(1, 11): # Individual simulations.
 # records one by one.
 fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6), (ax7, ax8), (ax9, ax10)) \
     = plt.subplots(5, 2, sharex=True, sharey=True)
-fig.suptitle('10 stochastic projections...')
+fig.suptitle('10 stochastic projections.')
 Time = list(range(1, HORIZON + 1))
 ax1.plot(Time, Output[:, 0])
 ax2.plot(Time, Output[:, 1])
