@@ -31,8 +31,7 @@ maximization of the fitness.
 for every state an animal can be in, for a specific time step.
 
 The whole program therefore works as nested blocks : 'over_state' is iterated
-for every time step and calls the function 'over_patches'. The function
-'over_patches' calls the function 'fitness'.
+for every time step and calls the function 'over_patches' that itself calls the function 'fitness'.
 
 Reference :
 Roff, D. A. (2010). Modeling Evolution: an introduction to numerical methods.
