@@ -19,7 +19,7 @@ The repository contains the initial programs in R from the book (Roff, 2010) for
 
 
 
-N.B : the script '4_parasitoids.py' is not finished and won't be presented.
+N.B : the script 'D_parasitoids.py' is not finished and won't be presented.
 
 
 Reference :
