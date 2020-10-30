@@ -3,13 +3,13 @@
 from the 6th chapter of Roff, 2010.
 Check the README.txt of the depository for more ecological context.
 
-The main objective of this script is to compute a "decision matrix", given a
-set of parameters that correspond to the biological context of the problem.
-The decision matrix is simply a matrix with rows corresponding to time steps
-and columns to the possible states in which an animal can be. Each matrix cell
-(i.e. at a certain time step and a certain state) corresponds to the
-identification number of the best patch an animal should choose if it wants to
-maximise it's fitness (the final time step being the main goal).
+As in A0_dynamic_programming_decision_matrix, the main objective of this script
+is to compute a "decision matrix", given a set of parameters.
+The difference is on the definition of fitness.
+In scenario A, the fitness is equal to survival at the terminal period. In this
+scenario B, the fitness is equal to the state of the animal at the terminal
+period : it depends not simply upon survival but also upon the accumulution of
+ressources.
 
 The problem is solved using the principles of dynamic programming. Therefore,
 the main objective, which is obtaining the decision matrix, is divided into
@@ -40,7 +40,8 @@ Oxford University Press
 
 Usage :
 ======
-python A0_dynamic_programmming_decision_matrix.py
+python B_decision_matrix_scaling_fitness.py
+
 """
 
 __authors__ = ("BAREILLE Servane", "BOURGADE Clément", "PECHIERAS Florian", \
@@ -167,11 +168,12 @@ def main():
     # fitnesses at time t using the ones in time t+1.
     # The second column corresponds to the fitnesses of time t+1 used for
     # the computation of the fitnesses of time t, updated in the first column.
-    # The survival at time = HORIZON is arbitrarily assigned to 1 for
-    # all states > X_CRITICAL since we are only interested in individuals that
-    # are alive at the end of the time period.
+    # The survival at time = HORIZON depends upon the accumulation of ressources.
+    # Thus, for all states > X_CRITICAL, since we are only interested in
+    # individuals that are alive at the end of the time period, we set their
+    # fitness to their state.
     f_vectors = np.zeros([X_MAX, 2])
-    f_vectors[list(range(X_CRITICAL, X_MAX)), 1] = 1
+    f_vectors[list(range(X_CRITICAL, X_MAX)), 1] = list(range(X_CRITICAL, X_MAX))
 
     # Initialisation of the best_patch and fxtt matrixes which keep for each
     # time and each state the best_patch to choose and the fitness associated.
