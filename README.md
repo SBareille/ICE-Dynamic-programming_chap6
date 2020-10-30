@@ -20,6 +20,9 @@ The repository contains the initial programs in R from the book (Roff, 2010) for
   
   C_indexing_and_equivalent_choices.py            computation of a decision matrix, with equivalent choices, indexing and interpolation (scenario 3)
 
+
+
+
 N.B : the script '4_parasitoids.py' is not finished and won't be presented.
 
 
