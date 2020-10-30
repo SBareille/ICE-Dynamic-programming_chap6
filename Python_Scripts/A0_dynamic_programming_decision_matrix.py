@@ -168,8 +168,8 @@ def main():
     # The second column corresponds to the fitnesses of time t+1 used for
     # the computation of the fitnesses of time t, updated in the first column.
     # The survival at time = HORIZON is arbitrarily assigned to 1 for
-    # all states > X_CRITICAL since we are only interested in individuals that
-    # are alive at the end of the time period.
+    # all states > X_CRITICAL because we are only interested in individuals
+    # that are alive at the end of the time period.
     f_vectors = np.zeros([X_MAX, 2])
     f_vectors[list(range(X_CRITICAL, X_MAX)), 1] = 1
 
@@ -186,7 +186,7 @@ def main():
         over_states(time, mat_best_patch, fxtt, f_vectors)
         f_vectors[:, 1] = np.matrix.copy(fxtt[time, :])
 
-    # Output the best_patch and fxtt matrixes after formating. The list of
+    # Output the mat_best_patch and fxtt matrixes after formating. The list of
     # values of states are given in the last line of each matrix for better
     # readability. The columns corresponding to the dead are deleted.
     mat_best_patch[HORIZON - 1, :] = list(range(1, X_MAX+1))
