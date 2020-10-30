@@ -187,7 +187,8 @@ def main():
 
 if __name__ == "__main__":
     np.set_printoptions(precision=3, suppress=True)
-    print(main()[0],"\n", main()[1],"\n", main()[2])
+    a,b,c = main()
+    print(a,"\n", b,"\n", c)
     
     plt.clf()
     fig = plt.figure()
