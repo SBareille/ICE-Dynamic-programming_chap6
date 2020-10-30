@@ -11,10 +11,10 @@ The decision matrix is subsequently used to make simulations of choices for indi
 The repository contains the initial programs in R from the book (Roff, 2010) for reference and the translated python scripts of the scenarios that we chose to study.
 
 * **A0_dynamic_programming_decision_matrix.py** --> computation of a decision matrix (scenario 0)
-* **A1_individual_prediction.py** ----------------> utilisation of the decision matrix for individual predictions
-* **A2_population_state_frequency_prediction.py**-> utilisation of the decision matrix for state frequency predictions
-* **B_decision_matrix_scaling_fitness.py** -------> computation of a decision matrix, changing the definition of fitness (scenario 1)
-* **C_indexing_and_equivalent_choices.py** -------> computation of a decision matrix, with equivalent choices, indexing and interpolation (scenario 3)
+* **A1_individual_prediction.py** --> utilisation of the decision matrix for individual predictions
+* **A2_population_state_frequency_prediction.py** --> utilisation of the decision matrix for state frequency predictions
+* **B_decision_matrix_scaling_fitness.py** --> computation of a decision matrix, changing the definition of fitness (scenario 1)
+* **C_indexing_and_equivalent_choices.py** --> computation of a decision matrix, with equivalent choices, indexing and interpolation (scenario 3)
 
 
 
