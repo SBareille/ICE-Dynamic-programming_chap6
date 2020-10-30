@@ -11,7 +11,7 @@ and columns to the possible states in which an animal can be. Each matrix cell
 identification number of the best patch an animal should choose if it wants to
 maximise its fitness (the final time step being the main goal).
 
-In this specific scenario, the problem is to know for a Lion if it should 
+In this specific scenario, the problem is to know for a Lion if it should *
 hunt in a pack or not in order to maximize its fitness, depending on
 its gut content (the state of the animal) and the time step.
 Therefore, in this context, the patch corresponds to the size of the pack
@@ -20,6 +20,14 @@ Therefore, in this context, the patch corresponds to the size of the pack
 Since values of gut content could be continuous and not discrete,
 an interpolation method is implemented to obtain values of fitness depending
 on the values of the closest precedent fitnesses.
+
+Reference :
+Roff, D. A. (2010). Modeling Evolution: an introduction to numerical methods.
+Oxford University Press
+
+Usage :
+======
+python C_indexing_and_equivalent_choices.py
 """
 
 __authors__ = ("BAREILLE Servane", "BOURGADE Clément", "PECHIERAS Florian", \
@@ -39,39 +47,45 @@ import matplotlib.pyplot as plt
 #from scipy.stats import binom
 
 def fitness(x_state, benefit_row_i, p_benefit_row_i, f_vectors):
-    """ Computes the fitness of a hunter (i.e. a Lion) in a specific pack size, 
+    """ Computes the fitness of a hunter (i.e. a Lion) in a specific pack size,
     knowing its gut content value is x_state.
-    
+
     Arguments:
     x_state -- state of the hunter, i.e. its gut content value
-    benefit_row_i -- List of state benefits (gut content benefits) 
-                     for a hunter for each possible number of prey 
+    benefit_row_i -- List of state benefits (gut content benefits)
+                     for a hunter for each possible number of prey
                      kills (0 to 3) when the size of the pack is 'i'.
     p_benefit_row_i -- Probability of killing 0 to 3 preys by a pack of size i
     f_vectors -- enables the calculation of fitnesses at time t
                 using the ones in time t+1
     """
-    w_patch = 0 # Initilisation of the fitness variable.
-    x_store = x_state # Set x_state to Xstore to preserve value through loop.
-    for i_kill in range(0,4): # Loops over the possible number of prey kills.
-        x_state = x_store - COST + benefit_row_i[i_kill] # New state value.
-        x_state = min(x_state, X_MAX) # Caps x_state to X_MAX value.
-        x_state = max(x_state, X_CRITICAL) # x_state can't be under X_CRITICAL.
-        
-        # Index corresponding to the column number of the matrix for a specific 
-        # state value. We use this index since in this scenario the value of 
+    # First, we initilise the fitness variable, and store x_state to preserve
+    # it through loop.
+    w_patch = 0
+    x_store = x_state
+    for i_kill in range(0, 4):
+        # Calculation of the possible state value of a hunter for the possible
+        # outcomes of the hunt (looping over the possible number of prey kills)
+        # The hunter's state must be kept between X_CRITICAL
+        # (if it reaches that value, the animal dies) and X_MAX.
+        x_state = x_store - COST + benefit_row_i[i_kill]
+        x_state = min(x_state, X_MAX)
+        x_state = max(x_state, X_CRITICAL)
+
+        # Index corresponding to the column number of the matrix for a specific
+        # state value. We use this index since in this scenario the value of
         # the state does not necessarly correspond to the value of the column.
-        index = int((x_state - X_CRITICAL)/X_INC) 
+        index = int((x_state - X_CRITICAL)/X_INC)
         index = min(index, INDEX_MAX-1)
-        
-        # Qx  used for linear interpolation. See Roff, 2010 for more details 
+
+        # q_x  used for linear interpolation. See Roff, 2010 for more details
         # on the interpolation method.
-        qx = x_state - int(x_state) 
-        term1 = qx * f_vectors[index, 1]
-        term2 = (1 - qx) * f_vectors[index, 1]
-        
-        # Interpolated value of fitness corresponds to Term1 + Term2 and is 
-        # multiplied by the probability of benefit for the i_kill number 
+        q_x = x_state - int(x_state)
+        term1 = q_x * f_vectors[index, 1]
+        term2 = (1 - q_x) * f_vectors[index, 1]
+
+        # Interpolated value of fitness corresponds to Term1 + Term2 and is
+        # multiplied by the probability of benefit for the i_kill number
         # of preys killed.
         w_patch = w_patch + p_benefit_row_i[i_kill] * (term1 + term2)
     return w_patch
@@ -89,27 +103,26 @@ def over_patches(x_state, f_vectors):
     2 - the associated best patch
     3 - the value 1 if there is a choice or 0 if not
     """
-
     rhs = [0] * N_PATCH  # Saves the fitnesses of every patch (size of pack).
-    for i in range(N_PATCH): 
+    for i in range(N_PATCH):
         rhs[i] = fitness(x_state, benefit[i,], p_benefit[i,], f_vectors)
     index = int((x_state - X_CRITICAL)/X_INC)
-    # Saving the best value of fitness as the new fitness value and the 
+    # Saving the best value of fitness as the new fitness value and the
     # associated best patch value.
     f_vectors[index, 0] = max(rhs)
-    best_patch = rhs.index(max(rhs)) + 1 
+    best_patch = rhs.index(max(rhs)) + 1
 
-    # Test if the animal can make a choice, i.e. that two sizes of packs give 
-    # a same value of fitness.
-    rhs = np.asarray(rhs,dtype=np.float32) 
+    # Test if the animal can make a choice, i.e. that two sizes of packs (or
+    # more) give a same value of fitness.
+    rhs = np.asarray(rhs, dtype=np.float32)
     choice = 0
-    if np.shape(np.where(rhs == max(rhs)))[1] > 1 : # Existence of a choice.
+    if np.shape(np.where(rhs == max(rhs)))[1] > 1: # Existence of a choice.
         choice = 1
     return [f_vectors[index, 0], best_patch, choice]
 
 
 def over_states(time, mat_best_patch, fxtt, choices, f_vectors):
-    """ Adds in the "best_patch", "fxtt" and "choice" matrixes the computed 
+    """ Adds in the "best_patch", "fxtt" and "choice" matrixes the computed
     values corresponding to each state (at a specific time).
 
     Arguments:
@@ -121,8 +134,8 @@ def over_states(time, mat_best_patch, fxtt, choices, f_vectors):
     at time t using the ones in time t+1
     """
     # Loops over all possible state values.
-    for index in list(range(X_CRITICAL + 1, INDEX_MAX)): 
-        x_state = index * X_INC + X_CRITICAL 
+    for index in list(range(X_CRITICAL + 1, INDEX_MAX + 1)):
+        x_state = index * X_INC + X_CRITICAL
         temp = over_patches(x_state, f_vectors)
         fxtt[time, index] = temp[0]
         mat_best_patch[time, index] = temp[1]
@@ -138,14 +151,18 @@ N_PATCH = 4  # Number of patches, i.e. number of possible packs
 COST = 6 # Daily food requirement.
 
 Y = 11.25 # Size of a single prey.
-k = np.array([0,1,2,3]) # Number of kills per size of pack.
+k = np.array([0, 1, 2, 3]) # Number of kills per size of pack.
 Pi = [0.15, 0.31, 0.33, 0.33]  # Probability of single kill for pack size.
-benefit = np.zeros([N_PATCH, len(k)])  # Rows = pack size + 1, Columns = number of kills.
-p_benefit = np.zeros([N_PATCH, len(k)])  # Probability of finding food in the 3 patches # Rows = pack size +1 , Columns = number of kills
+# Now we calculate benefits (=amount per individual) and store them in a matrix
+# with Rows = pack size + 1 and Columns = number of kills.
+# We calculate the binomial probabilities of killing for the different pack
+# sizes and store them in a matrix with the same dimension.
+benefit = np.zeros([N_PATCH, len(k)])
+p_benefit = np.zeros([N_PATCH, len(k)])
+for pack_size in range(1, 5):
+    p_benefit[pack_size-1, : ] = scipy.stats.binom.pmf(k, 3, Pi[pack_size-1])
+    benefit[pack_size-1, 1:4] = Y * k[1:4] / pack_size
 
-for pack_size in range(1, 5) : # Iterate over pack sizes
-    p_benefit[pack_size-1,:] = scipy.stats.binom.pmf(k, 3, Pi[pack_size-1]) # Calculate binomial probabilities using function dbinom
-    benefit[pack_size-1, 1:4] = Y * k[1:4] / pack_size # Calculate benefits = amount per individual
 HORIZON = 31  # Number of time steps
 
 
@@ -164,21 +181,24 @@ def main():
 
     # Initialisation of the best_patch and fxtt matrixes which keep for each
     # time and each state the best_patch to choose and the fitness associated.
+    # If there are two (or more) "best patches", the animal has a choice and we
+    # indicate it with a 1 in the matrix choices.
     fxtt = np.zeros([HORIZON, INDEX_MAX + 1])
     mat_best_patch = np.zeros([HORIZON, INDEX_MAX + 1])
-     # Matrix for flag indicating multiple equivalent choices. 0 = only one choice, 1 = more than one choice
     choices = np.zeros([HORIZON, INDEX_MAX + 1])
 
-    # We go back in time from t=HORIZON, when individuals are alive, to t=1,
-    # as we calculate fitness in time t thanks to the fitness in time t+1
-    # For each time we calculate a lign of best_patches and fxtt,
-    # and then pass the values of fitness into the second column of f_vector.
+    # Going back in time from t=HORIZON, when individuals are alive, to t=1.
+    # For each time step, over_state is called to compute the best patches
+    # and fitnesses and then passes the new values of fitnesses
+    # into the second column of f_vector.
     for time in reversed(range(HORIZON)):
         over_states(time, mat_best_patch, fxtt, choices, f_vectors)
         f_vectors[:, 1] = np.matrix.copy(fxtt[time, :])
         # print(f_vectors)
 
-    # Finally, we output the best_patch and fxtt matrixes after formating
+    # Output the mat_best_patch, fxtt and choices matrixes after formating.
+    # The list of values of states are given in the last line of each matrix
+    # for better readability.
     mat_best_patch[HORIZON - 1, :] = list(range(0, INDEX_MAX + 1))
     fxtt[HORIZON - 1, : ] = list(range(0, INDEX_MAX + 1))
     choices[HORIZON - 1, : ] = list(range(0, INDEX_MAX + 1))
@@ -187,22 +207,23 @@ def main():
 
 if __name__ == "__main__":
     np.set_printoptions(precision=3, suppress=True)
-    a,b,c = main()
-    print(a,"\n", b,"\n", c)
-    
+    a, b, c = main()
+    print(a, "\n", b, "\n", c)
+
+    # Plot mat_best_patch, fxtt and choices.
     plt.clf()
     fig = plt.figure()
-    
-    plt.subplot(1,3,1)
-    im = plt.imshow(main()[0], cmap = 'gray', vmin = 1, vmax = 4)
-    plt.colorbar(im, orientation = 'horizontal')
-    
-    plt.subplot(1,3,2)
-    im2 = plt.imshow(main()[1], cmap = 'gray', vmin = 0, vmax = 1)
-    plt.colorbar(im2, orientation = 'horizontal')
-    
-    plt.subplot(1,3,3)
-    im3 = plt.imshow(main()[2], cmap = 'gray', vmin = 0, vmax = 1)
-    plt.colorbar(im3, orientation = 'horizontal')
+
+    plt.subplot(1, 3, 1)
+    im = plt.imshow(a, cmap='gray', vmin=1, vmax=4)
+    plt.colorbar(im, orientation='horizontal')
+
+    plt.subplot(1, 3, 2)
+    im2 = plt.imshow(b, cmap='gray', vmin=0, vmax=1)
+    plt.colorbar(im2, orientation='horizontal')
+
+    plt.subplot(1, 3, 3)
+    im3 = plt.imshow(c, cmap='gray', vmin=0, vmax=1)
+    plt.colorbar(im3, orientation='horizontal')
 
     plt.show()
